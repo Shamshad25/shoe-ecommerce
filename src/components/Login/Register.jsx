@@ -50,7 +50,7 @@ const Register = (props) => {
   };
 
   return (
-    <div style={{ backgroundColor: "#ddd", height: "91vh" }}>
+    <div style={{ backgroundColor: "#ddd", height: "100vh" }}>
       <div
         className="container d-flex flex-column justify-content-center"
         style={{ height: "80vh" }}

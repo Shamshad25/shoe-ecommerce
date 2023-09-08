@@ -11,11 +11,13 @@ import Order from "./components/card/Order";
 function App() {
   return (
     <>
-      <Header />
       <Routes>
         <Route path={"/"} index element={<Login />} />
-        <Route path={"/home"} element={<Home />} />
         <Route path={"/register"} element={<Register />} />
+      </Routes>
+      <Header />
+      <Routes>
+        <Route path={"/home"} element={<Home />} />
         <Route path={"/order"} element={<Order />} />
         <Route path={"/card"} element={<Cards />} />
         <Route path={"/cart/:id"} element={<CardDetails />} />

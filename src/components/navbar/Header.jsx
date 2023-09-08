@@ -15,7 +15,6 @@ const Header = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const getData = useSelector((state) => state.cartreducer.carts);
-  const activeUser = useSelector((state) => state.cartreducer.activeUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,23 +78,21 @@ const Header = () => {
             />
             <Button variant="outline-dark">Search</Button>
           </Form>
-          {activeUser && (
-            <Badge
-              badgeContent={getData.length}
-              color="primary"
-              sx={{ fontSize: 10 }}
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-            >
-              <i
-                class="fa-solid fa-cart-shopping"
-                style={{ fontSize: 25, cursor: "pointer" }}
-              ></i>
-            </Badge>
-          )}
+          <Badge
+            badgeContent={getData.length}
+            color="primary"
+            sx={{ fontSize: 10 }}
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <i
+              class="fa-solid fa-cart-shopping"
+              style={{ fontSize: 25, cursor: "pointer" }}
+            ></i>
+          </Badge>
         </Container>
         <Menu
           id="basic-menu"
@@ -212,46 +209,47 @@ const Header = () => {
             </div>
           )}
         </Menu>
-        {activeUser && (
-          <div
-            className="d-flex justify-content-center align-items-center"
-            style={{
-              cursor: "pointer",
-              width: "30px",
-              height: "30px",
-              borderRadius: "50%",
-              backgroundColor: "grey",
-              position: "relative",
-            }}
-            onClick={() => setOpenModal(true)}
-          >
-            <FaUser style={{ width: "20px", height: "20px" }} color="#000" />
-            {openModal && (
-              <div
-                className="d-flex  justify-content-center align-self-center"
-                style={{
-                  width: "150px",
-                  backgroundColor: "#ddd",
-                  position: "absolute",
-                  right: 0,
-                  top: 30,
-                  zIndex: 1111,
-                  borderRadius: "5px",
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            cursor: "pointer",
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+            backgroundColor: "grey",
+            position: "relative",
+          }}
+          onClick={() => setOpenModal(!openModal)}
+        >
+          <FaUser style={{ width: "20px", height: "20px" }} color="#000" />
+          {openModal && (
+            <div
+              className="d-flex  justify-content-center align-self-center"
+              style={{
+                width: "150px",
+                backgroundColor: "#ddd",
+                position: "absolute",
+                right: 0,
+                top: 30,
+                zIndex: 1111,
+                borderRadius: "5px",
+              }}
+            >
+              <button
+                style={{ border: "none", margin: "5px" }}
+                onClick={() => {
+                  setOpenModal(false);
+                  logout();
                 }}
               >
-                <button
-                  style={{ border: "none", margin: "5px" }}
-                  onClick={() => {
-                    setOpenModal(false);
-                    logout();
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="mt-3 p-2 d-flex justify-content-center align-items-center">
+          <p>Admin</p>
+        </div>
       </Navbar>
     </>
   );
