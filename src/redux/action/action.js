@@ -21,3 +21,27 @@ export const REMOVE = (item) => {
     payload: item,
   };
 };
+
+// Search Items
+
+export const SEARCH = (text) => {
+  return {
+    type: "SEARCH_ITEM",
+    payload: text,
+  };
+};
+
+// Login
+export const LOGIN = (userID) => {
+  return {
+    type: "LOGIN",
+    payload: userID,
+  };
+};
+
+// Logout
+export const LOGOUT = () => {
+  return {
+    type: "LOGOUT",
+  };
+};

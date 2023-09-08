@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { Products } from "../../output";
 import "../style/Style.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ADD } from "../../redux/action/action";
 
 const Cards = () => {
-  const [data] = useState(Products);
+  const data = useSelector((state) => state.cartreducer.products);
 
   const dispatch = useDispatch();
 
@@ -16,8 +15,14 @@ const Cards = () => {
   };
 
   return (
-    <div className="container mt-3">
-      <h2 className="text-center">Product Lists</h2>
+    <div className="container mt-3 text-center">
+      <h1>SHOES, CLOTHING & ACCESSORIES SALE: UP TO 60% OFF</h1>
+      <p>
+        Remake your look for less. Whether you're an avid athlete or seeking a
+        fresh streetwear vibe, you'll find the best gear at the ShoeFit shoes
+        sale. Save up to 60% off iconic adidas styles like NMD, Stan Smith, and
+        Originals.
+      </p>
       <div className="row d-flex justify-content-center align-items-center">
         {data &&
           data.map((element) => {

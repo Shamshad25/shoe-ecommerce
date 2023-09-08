@@ -4,18 +4,21 @@ import Badge from "@mui/material/Badge";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
-import { DELETE } from "../../redux/action/action";
+import { Button, Form, Table } from "react-bootstrap";
+import { DELETE, LOGOUT, SEARCH } from "../../redux/action/action";
+import { FaUser } from "react-icons/fa6";
 
 const Header = () => {
   const [price, setPrice] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = useSelector((state) => state.cartreducer.carts);
+  const activeUser = useSelector((state) => state.cartreducer.activeUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -24,6 +27,11 @@ const Header = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logout = () => {
+    dispatch(LOGOUT());
+    navigate("/");
   };
 
   const remove = (id) => {
@@ -38,6 +46,10 @@ const Header = () => {
     setPrice(price);
   };
 
+  const onSearch = (text) => {
+    dispatch(SEARCH(text));
+  };
+
   useEffect(() => {
     total();
   }, [total]);
@@ -46,29 +58,44 @@ const Header = () => {
     <>
       <Navbar bg="light" data-bs-theme="light" style={{ height: "60px" }}>
         <Container>
-          <NavLink to="/" className="text-decoration-none text-dark mx-3">
-            Shoe Fit
+          <NavLink to="/home" className="text-decoration-none text-dark mx-3">
+            ShoeStore
           </NavLink>
           <Nav className="me-auto">
-            <NavLink to="/" className="text-decoration-none text-dark mx-3">
+            <NavLink to="/home" className="text-decoration-none text-dark mx-3">
               Home
             </NavLink>
           </Nav>
-          <Badge
-            badgeContent={getData.length}
-            color="primary"
-            sx={{ fontSize: 10 }}
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
+          <Form
+            className="d-flex justify-content-center"
+            style={{ paddingRight: "20px" }}
           >
-            <i
-              class="fa-solid fa-cart-shopping"
-              style={{ fontSize: 25, cursor: "pointer" }}
-            ></i>
-          </Badge>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              onChange={(e) => onSearch(e.target.value)}
+            />
+            <Button variant="outline-dark">Search</Button>
+          </Form>
+          {activeUser && (
+            <Badge
+              badgeContent={getData.length}
+              color="primary"
+              sx={{ fontSize: 10 }}
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <i
+                class="fa-solid fa-cart-shopping"
+                style={{ fontSize: 25, cursor: "pointer" }}
+              ></i>
+            </Badge>
+          )}
         </Container>
         <Menu
           id="basic-menu"
@@ -151,8 +178,18 @@ const Header = () => {
                         </>
                       );
                     })}
+
                   <p className="text-center">Total : ${price}</p>
                 </tbody>
+                <Button
+                  onClick={() => {
+                    setAnchorEl(null);
+                    navigate("/order");
+                  }}
+                  variant="danger"
+                >
+                  Place Order
+                </Button>
               </Table>
             </div>
           ) : (
@@ -175,6 +212,46 @@ const Header = () => {
             </div>
           )}
         </Menu>
+        {activeUser && (
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+              cursor: "pointer",
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              backgroundColor: "grey",
+              position: "relative",
+            }}
+            onClick={() => setOpenModal(true)}
+          >
+            <FaUser style={{ width: "20px", height: "20px" }} color="#000" />
+            {openModal && (
+              <div
+                className="d-flex  justify-content-center align-self-center"
+                style={{
+                  width: "150px",
+                  backgroundColor: "#ddd",
+                  position: "absolute",
+                  right: 0,
+                  top: 30,
+                  zIndex: 1111,
+                  borderRadius: "5px",
+                }}
+              >
+                <button
+                  style={{ border: "none", margin: "5px" }}
+                  onClick={() => {
+                    setOpenModal(false);
+                    logout();
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </Navbar>
     </>
   );

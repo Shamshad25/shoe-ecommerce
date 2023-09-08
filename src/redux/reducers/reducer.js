@@ -1,5 +1,9 @@
+import { Products } from "../../output";
+
 const INIT_STATE = {
   carts: [],
+  products: Products,
+  activeUser: null,
 };
 
 export const cartreducer = (state = INIT_STATE, action) => {
@@ -48,6 +52,27 @@ export const cartreducer = (state = INIT_STATE, action) => {
           carts: data,
         };
       }
+    }
+    case "SEARCH_ITEM": {
+      const searchedProducts = INIT_STATE.products.filter((el) =>
+        el.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+      return {
+        ...state,
+        products: searchedProducts,
+      };
+    }
+    case "LOGIN": {
+      return {
+        ...state,
+        activeUser: action.payload,
+      };
+    }
+    case "LOGOUT": {
+      return {
+        ...state,
+        activeUser: null,
+      };
     }
     default:
       return state;
